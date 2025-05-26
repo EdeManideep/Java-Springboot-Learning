@@ -1,6 +1,8 @@
 package com.example.Springboot.Learning.service;
 
 import java.util.List;
+
+import com.example.Springboot.Learning.dto.EmployeeRegisterDTO;
 import org.springframework.stereotype.Service;
 
 import com.example.Springboot.Learning.exceptions.EmployeeNotFoundException;
@@ -28,11 +30,15 @@ public class EmployeeService {
         return repo.findById(id).orElse(null);
     }
 
-    public Employee create(Employee e) {
-        return repo.save(e);
+    public Employee create(EmployeeRegisterDTO e) {
+        Employee employee = new Employee();
+        employee.setName(e.getName());
+        employee.setDepartment(e.getDepartment());
+        employee.setSalary(e.getSalary());
+        return repo.save(employee);
     }
 
-    public Employee update(Long id, Employee employee) {
+    public Employee update(Long id, EmployeeRegisterDTO employee) {
         Employee employee1 = repo.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
 

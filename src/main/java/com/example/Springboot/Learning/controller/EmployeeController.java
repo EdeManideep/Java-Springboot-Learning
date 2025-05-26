@@ -2,6 +2,7 @@ package com.example.Springboot.Learning.controller;
 
 import java.util.List;
 
+import com.example.Springboot.Learning.dto.EmployeeRegisterDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,7 @@ public class EmployeeController {
     public ResponseEntity<?> getAll() {
         List<Employee> employees = service.getAll();
         if (employees.isEmpty()) {
-            return ResponseEntity.ok("No Employees Inserted");
+            return ResponseEntity.ok("No Employees Present");
         }
         return ResponseEntity.ok(employees);
     }
@@ -39,12 +40,12 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Employee create(@RequestBody Employee employee) {
+    public Employee create(@RequestBody EmployeeRegisterDTO employee) {
         return service.create(employee);
     }
 
     @PutMapping("/{id}")
-    public Employee update(@PathVariable Long id, @RequestBody Employee employee) {
+    public Employee update(@PathVariable Long id, @RequestBody EmployeeRegisterDTO employee) {
         return service.update(id, employee);
     }
 
