@@ -1,4 +1,4 @@
-# add logging to project log4j
+# add logging to project log4j2
 1. Custom exception handling for 4XX and 5XX
 2. Swagger detailed all possible exceptions and outcomes
 3. pagination for get all employess end point url
