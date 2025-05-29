@@ -3,11 +3,14 @@ package com.example.Springboot.Learning.service;
 import java.util.List;
 
 import com.example.Springboot.Learning.dto.EmployeeRegisterDTO;
+import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Springboot.Learning.exceptions.EmployeeNotFoundException;
 import com.example.Springboot.Learning.model.Employee;
 import com.example.Springboot.Learning.repository.EmployeeRepository;
+import org.apache.logging.log4j.LogManager;
 
 @Service
 public class EmployeeService {
@@ -21,8 +24,11 @@ public class EmployeeService {
         this.repo = repo;
     }
 
-    public List<Employee> getAll() {
-        return repo.findAll();
+    private static final Logger logger = LogManager.getLogger(EmployeeService.class);
+
+    public List<Employee> getAll(Sort sort) {
+        logger.debug("Calling getAll from repository");
+        return repo.findAll(sort);
     }
 
     public Employee getById(Long id) {
@@ -31,6 +37,7 @@ public class EmployeeService {
     }
 
     public Employee create(EmployeeRegisterDTO e) {
+        logger.info("Creating employee: {}", e.getName());
         Employee employee = new Employee();
         employee.setName(e.getName());
         employee.setDepartment(e.getDepartment());

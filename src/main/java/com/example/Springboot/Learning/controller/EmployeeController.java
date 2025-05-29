@@ -12,6 +12,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,18 +33,39 @@ public class EmployeeController {
         this.service = service;
     }
 
-    @Operation(summary = "Get all employees", description = "Returns a list of all employees")
+    private static final Logger logger = LogManager.getLogger(EmployeeController.class);
+
+
+    @Operation(
+            summary = "Get all employees",
+            description = "Returns a list of all employees with optional sorting by column and direction"
+    )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list"),
+            @ApiResponse(responseCode = "400", description = "Invalid sort direction or column")
     })
     @GetMapping
-    public ResponseEntity<?> getAll() {
-        List<Employee> employees = service.getAll();
+    public ResponseEntity<?> getAll(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+
+        logger.info("Fetching all employees");
+
+        // Validate direction
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        List<Employee> employees = service.getAll(sort);
+
         if (employees.isEmpty()) {
+            logger.warn("No employees present");
             return ResponseEntity.ok("No Employees Present");
         }
+
         return ResponseEntity.ok(employees);
     }
+
 
     @Operation(summary = "Get employee by ID", description = "Fetch a single employee using their ID")
     @ApiResponses({
@@ -53,13 +78,32 @@ public class EmployeeController {
         return service.getById(id);
     }
 
-    @Operation(summary = "Create a new employee", description = "Adds a new employee using the provided data")
-    @ApiResponse(responseCode = "201", description = "Employee successfully created")
+    @Operation(
+            summary = "Create a new employee",
+            description = "Adds a new employee using the provided data"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Request succeeded, but employee may have already existed"),
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Employee successfully created"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid input data"),
+           @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error")
+    })
     @PostMapping
-    public Employee create(
-            @Parameter(description = "Employee data for creation") @RequestBody EmployeeRegisterDTO employee) {
-        return service.create(employee);
+    public ResponseEntity<Employee> create(
+            @Parameter(description = "Employee data for creation")
+            @RequestBody EmployeeRegisterDTO employee) {
+        Employee created = service.create(employee);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
+
 
     @Operation(summary = "Update an existing employee", description = "Updates employee details based on the provided ID")
     @ApiResponses({
