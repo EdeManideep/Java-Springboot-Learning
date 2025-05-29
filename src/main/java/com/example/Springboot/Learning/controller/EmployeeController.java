@@ -42,7 +42,7 @@ public class EmployeeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list"),
-            @ApiResponse(responseCode = "400", description = "Invalid sort direction or column")
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping
     public ResponseEntity<?> getAll(
@@ -70,7 +70,7 @@ public class EmployeeController {
     @Operation(summary = "Get employee by ID", description = "Fetch a single employee using their ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Employee found"),
-            @ApiResponse(responseCode = "404", description = "Employee not found")
+            @ApiResponse(responseCode = "204", description = "Employee not there with given id (No Content)")
     })
     @GetMapping("/{id}")
     public Employee getById(
@@ -83,18 +83,9 @@ public class EmployeeController {
             description = "Adds a new employee using the provided data"
     )
     @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Request succeeded, but employee may have already existed"),
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Employee successfully created"),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Invalid input data"),
-           @ApiResponse(
-                    responseCode = "500",
-                    description = "Internal server error")
+            @ApiResponse(responseCode = "201", description = "Employee successfully created"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+           @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping
     public ResponseEntity<Employee> create(
@@ -108,7 +99,7 @@ public class EmployeeController {
     @Operation(summary = "Update an existing employee", description = "Updates employee details based on the provided ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Employee updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Employee not found")
+            @ApiResponse(responseCode = "204", description = "Employee not there with given id to update (No Content)")
     })
     @PutMapping("/{id}")
     public Employee update(
@@ -119,8 +110,8 @@ public class EmployeeController {
 
     @Operation(summary = "Delete employee by ID", description = "Removes an employee from the system using their ID")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Employee deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Employee not found")
+            @ApiResponse(responseCode = "200", description = "Employee deleted successfully"),
+            @ApiResponse(responseCode = "204", description = "Employee not there with given id to delete (No Content)")
     })
     @DeleteMapping("/{id}")
     public void delete(
