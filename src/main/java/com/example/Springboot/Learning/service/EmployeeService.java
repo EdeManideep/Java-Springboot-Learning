@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.example.Springboot.Learning.dto.EmployeeRegisterDTO;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +28,9 @@ public class EmployeeService {
 
     private static final Logger logger = LogManager.getLogger(EmployeeService.class);
 
-    public List<Employee> getAll(Sort sort) {
-        logger.debug("Calling getAll from repository");
-        return repo.findAll(sort);
+    public Page<Employee> getAll(Pageable pageable) {
+        logger.info("Calling repository to fetch paginated employee list");
+        return repo.findAll(pageable);
     }
 
     public Employee getById(Long id) {

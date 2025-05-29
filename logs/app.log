@@ -78,3 +78,49 @@
 2025-05-29 12:42:25 [http-nio-8080-exec-1] INFO  com.example.Springboot.Learning.controller.EmployeeController - Fetching all employees
 2025-05-29 12:42:37 [http-nio-8080-exec-2] INFO  com.example.Springboot.Learning.controller.EmployeeController - Fetching all employees
 2025-05-29 12:42:37 [http-nio-8080-exec-2] WARN  com.example.Springboot.Learning.controller.EmployeeController - No employees present
+2025-05-29 12:52:54 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Starting SpringbootLearningApplication using Java 24.0.1 with PID 15292 (C:\Users\manid\OneDrive\Documents\Springboot-Learning\target\classes started by manid in C:\Users\manid\OneDrive\Documents\Springboot-Learning)
+2025-05-29 12:52:54 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - No active profile set, falling back to 1 default profile: "default"
+2025-05-29 12:52:55 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Started SpringbootLearningApplication in 1.086 seconds (process running for 1770.883)
+2025-05-29 12:52:56 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Starting SpringbootLearningApplication using Java 24.0.1 with PID 15292 (C:\Users\manid\OneDrive\Documents\Springboot-Learning\target\classes started by manid in C:\Users\manid\OneDrive\Documents\Springboot-Learning)
+2025-05-29 12:52:56 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - No active profile set, falling back to 1 default profile: "default"
+2025-05-29 12:52:57 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Started SpringbootLearningApplication in 0.503 seconds (process running for 1772.942)
+2025-05-29 12:54:30 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Starting SpringbootLearningApplication using Java 24.0.1 with PID 15292 (C:\Users\manid\OneDrive\Documents\Springboot-Learning\target\classes started by manid in C:\Users\manid\OneDrive\Documents\Springboot-Learning)
+2025-05-29 12:54:30 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - No active profile set, falling back to 1 default profile: "default"
+2025-05-29 12:54:30 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Started SpringbootLearningApplication in 0.443 seconds (process running for 1866.344)
+2025-05-29 12:54:32 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Starting SpringbootLearningApplication using Java 24.0.1 with PID 15292 (C:\Users\manid\OneDrive\Documents\Springboot-Learning\target\classes started by manid in C:\Users\manid\OneDrive\Documents\Springboot-Learning)
+2025-05-29 12:54:32 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - No active profile set, falling back to 1 default profile: "default"
+2025-05-29 12:54:32 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Started SpringbootLearningApplication in 0.339 seconds (process running for 1868.142)
+2025-05-29 12:55:54 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Starting SpringbootLearningApplication using Java 24.0.1 with PID 15292 (C:\Users\manid\OneDrive\Documents\Springboot-Learning\target\classes started by manid in C:\Users\manid\OneDrive\Documents\Springboot-Learning)
+2025-05-29 12:55:54 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - No active profile set, falling back to 1 default profile: "default"
+2025-05-29 12:55:54 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Started SpringbootLearningApplication in 0.441 seconds (process running for 1950.498)
+2025-05-29 12:55:56 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Starting SpringbootLearningApplication using Java 24.0.1 with PID 15292 (C:\Users\manid\OneDrive\Documents\Springboot-Learning\target\classes started by manid in C:\Users\manid\OneDrive\Documents\Springboot-Learning)
+2025-05-29 12:55:56 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - No active profile set, falling back to 1 default profile: "default"
+2025-05-29 12:55:56 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Started SpringbootLearningApplication in 0.32 seconds (process running for 1952.284)
+2025-05-29 13:49:47 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Starting SpringbootLearningApplication using Java 24.0.1 with PID 19396 (C:\Users\manid\OneDrive\Documents\Springboot-Learning\target\classes started by manid in C:\Users\manid\OneDrive\Documents\Springboot-Learning)
+2025-05-29 13:49:47 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - No active profile set, falling back to 1 default profile: "default"
+2025-05-29 13:49:53 [restartedMain] INFO  com.example.Springboot.Learning.SpringbootLearningApplication - Started SpringbootLearningApplication in 6.273 seconds (process running for 8.977)
+2025-05-29 13:50:30 [http-nio-8080-exec-2] INFO  com.example.Springboot.Learning.service.EmployeeService - Creating employee: Manideep
+2025-05-29 13:52:44 [http-nio-8080-exec-9] INFO  com.example.Springboot.Learning.service.EmployeeService - Creating employee: Manideep
+2025-05-29 13:52:46 [http-nio-8080-exec-10] INFO  com.example.Springboot.Learning.service.EmployeeService - Creating employee: Manideep
+2025-05-29 13:53:09 [http-nio-8080-exec-8] INFO  com.example.Springboot.Learning.controller.EmployeeController - Fetching all employees - page 0, size 10, sort by id, direction asc
+2025-05-29 13:53:09 [http-nio-8080-exec-8] INFO  com.example.Springboot.Learning.service.EmployeeService - Calling repository to fetch paginated employee list
+2025-05-29 13:53:20 [http-nio-8080-exec-5] INFO  com.example.Springboot.Learning.controller.EmployeeController - Fetching all employees - page 1, size 10, sort by id, direction asc
+2025-05-29 13:53:20 [http-nio-8080-exec-5] INFO  com.example.Springboot.Learning.service.EmployeeService - Calling repository to fetch paginated employee list
+2025-05-29 13:53:20 [http-nio-8080-exec-5] WARN  com.example.Springboot.Learning.controller.EmployeeController - No employees found for the given page/filters.
+2025-05-29 13:53:30 [http-nio-8080-exec-3] INFO  com.example.Springboot.Learning.controller.EmployeeController - Fetching all employees - page 0, size 10, sort by id, direction asc
+2025-05-29 13:53:30 [http-nio-8080-exec-3] INFO  com.example.Springboot.Learning.service.EmployeeService - Calling repository to fetch paginated employee list
+2025-05-29 13:53:43 [http-nio-8080-exec-1] INFO  com.example.Springboot.Learning.controller.EmployeeController - Fetching all employees - page 0, size 1, sort by id, direction asc
+2025-05-29 13:53:43 [http-nio-8080-exec-1] INFO  com.example.Springboot.Learning.service.EmployeeService - Calling repository to fetch paginated employee list
+2025-05-29 13:53:49 [http-nio-8080-exec-4] INFO  com.example.Springboot.Learning.controller.EmployeeController - Fetching all employees - page 2, size 1, sort by id, direction asc
+2025-05-29 13:53:49 [http-nio-8080-exec-4] INFO  com.example.Springboot.Learning.service.EmployeeService - Calling repository to fetch paginated employee list
+2025-05-29 13:54:01 [http-nio-8080-exec-2] INFO  com.example.Springboot.Learning.controller.EmployeeController - Fetching all employees - page 1, size 2, sort by id, direction desc
+2025-05-29 13:54:01 [http-nio-8080-exec-2] INFO  com.example.Springboot.Learning.service.EmployeeService - Calling repository to fetch paginated employee list
+2025-05-29 13:54:14 [http-nio-8080-exec-6] INFO  com.example.Springboot.Learning.controller.EmployeeController - Fetching all employees - page 1, size 2, sort by id, direction desc
+2025-05-29 13:54:14 [http-nio-8080-exec-6] INFO  com.example.Springboot.Learning.service.EmployeeService - Calling repository to fetch paginated employee list
+2025-05-29 13:54:23 [http-nio-8080-exec-7] INFO  com.example.Springboot.Learning.controller.EmployeeController - Fetching all employees - page 0, size 2, sort by id, direction desc
+2025-05-29 13:54:23 [http-nio-8080-exec-7] INFO  com.example.Springboot.Learning.service.EmployeeService - Calling repository to fetch paginated employee list
+2025-05-29 13:54:44 [http-nio-8080-exec-9] INFO  com.example.Springboot.Learning.controller.EmployeeController - Fetching all employees - page 0, size 2, sort by salary, direction desc
+2025-05-29 13:54:44 [http-nio-8080-exec-9] INFO  com.example.Springboot.Learning.service.EmployeeService - Calling repository to fetch paginated employee list
+2025-05-29 13:55:12 [http-nio-8080-exec-10] INFO  com.example.Springboot.Learning.service.EmployeeService - Creating employee: Chintu
+2025-05-29 13:55:20 [http-nio-8080-exec-8] INFO  com.example.Springboot.Learning.controller.EmployeeController - Fetching all employees - page 0, size 2, sort by salary, direction desc
+2025-05-29 13:55:20 [http-nio-8080-exec-8] INFO  com.example.Springboot.Learning.service.EmployeeService - Calling repository to fetch paginated employee list

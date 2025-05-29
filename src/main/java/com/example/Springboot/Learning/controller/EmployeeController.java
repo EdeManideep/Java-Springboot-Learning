@@ -14,6 +14,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +40,8 @@ public class EmployeeController {
 
 
     @Operation(
-            summary = "Get all employees",
-            description = "Returns a list of all employees with optional sorting by column and direction"
+            summary = "Get all employees with pagination",
+            description = "Returns a paginated list of employees with optional sorting by column and direction"
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list"),
@@ -46,26 +49,27 @@ public class EmployeeController {
     })
     @GetMapping
     public ResponseEntity<?> getAll(
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String direction) {
+            @Parameter(description = "Column name to sort by") @RequestParam(defaultValue = "id") String sortBy,
+            @Parameter(description = "Sort direction: asc or desc") @RequestParam(defaultValue = "asc") String direction,
+            @Parameter(description = "Page number (zero-based index)") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of records per page") @RequestParam(defaultValue = "10") int size) {
 
-        logger.info("Fetching all employees");
+        logger.info("Fetching all employees - page {}, size {}, sort by {}, direction {}", page, size, sortBy, direction);
 
-        // Validate direction
         Sort sort = direction.equalsIgnoreCase("desc")
                 ? Sort.by(sortBy).descending()
                 : Sort.by(sortBy).ascending();
 
-        List<Employee> employees = service.getAll(sort);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Employee> employeesPage = service.getAll(pageable);
 
-        if (employees.isEmpty()) {
-            logger.warn("No employees present");
+        if (employeesPage.isEmpty()) {
+            logger.warn("No employees found for the given page/filters.");
             return ResponseEntity.ok("No Employees Present");
         }
 
-        return ResponseEntity.ok(employees);
+        return ResponseEntity.ok(employeesPage);
     }
-
 
     @Operation(summary = "Get employee by ID", description = "Fetch a single employee using their ID")
     @ApiResponses({
