@@ -10,3 +10,4 @@
 9. learn about reactive java
 10. change the datatype of salary field - done
 11. Check the workflow action maven build
+12. Add the project to the Docker
