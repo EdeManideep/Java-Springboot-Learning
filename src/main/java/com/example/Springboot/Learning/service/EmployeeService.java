@@ -3,11 +3,15 @@ package com.example.Springboot.Learning.service;
 import java.util.List;
 
 import com.example.Springboot.Learning.dto.EmployeeRegisterDTO;
+import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.Springboot.Learning.exceptions.EmployeeNotFoundException;
 import com.example.Springboot.Learning.model.Employee;
 import com.example.Springboot.Learning.repository.EmployeeRepository;
+import org.apache.logging.log4j.LogManager;
 
 @Service
 public class EmployeeService {
@@ -21,8 +25,11 @@ public class EmployeeService {
         this.repo = repo;
     }
 
-    public List<Employee> getAll() {
-        return repo.findAll();
+    private static final Logger logger = LogManager.getLogger(EmployeeService.class);
+
+    public Page<Employee> getAll(Pageable pageable) {
+        logger.info("Calling repository to fetch paginated employee list");
+        return repo.findAll(pageable);
     }
 
     public Employee getById(Long id) {
@@ -31,6 +38,7 @@ public class EmployeeService {
     }
 
     public Employee create(EmployeeRegisterDTO e) {
+        logger.info("Creating employee: {}", e.getName());
         Employee employee = new Employee();
         employee.setName(e.getName());
         employee.setDepartment(e.getDepartment());
@@ -53,5 +61,10 @@ public class EmployeeService {
     public void delete(Long id) {
         repo.findById(id).orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
         repo.deleteById(id);
+    }
+
+    public  List<Employee> getAllEmployees(){
+        logger.info("Fetching all employees for name searching");
+        return repo.findAll();
     }
 }

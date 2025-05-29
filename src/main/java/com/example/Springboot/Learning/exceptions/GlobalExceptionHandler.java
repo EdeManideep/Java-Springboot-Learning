@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     // Handle specific exception
     @ExceptionHandler(EmployeeNotFoundException.class)
     public ResponseEntity<Object> handleEmployeeNotFound(EmployeeNotFoundException ex) {
-        return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+        return buildResponse(HttpStatus.NO_CONTENT, ex.getMessage());
     }
 
     // Handle bad requests - 4XX

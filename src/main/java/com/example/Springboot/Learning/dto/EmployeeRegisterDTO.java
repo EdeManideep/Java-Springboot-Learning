@@ -12,5 +12,5 @@ public class EmployeeRegisterDTO {
     private String department;
 
     @Schema(description = "Monthly salary of the employee", example = "4500.75")
-    private double salary;
+    private Double salary;
 }
