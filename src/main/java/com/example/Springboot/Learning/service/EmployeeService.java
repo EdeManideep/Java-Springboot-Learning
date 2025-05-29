@@ -6,7 +6,6 @@ import com.example.Springboot.Learning.dto.EmployeeRegisterDTO;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Springboot.Learning.exceptions.EmployeeNotFoundException;
@@ -62,5 +61,10 @@ public class EmployeeService {
     public void delete(Long id) {
         repo.findById(id).orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
         repo.deleteById(id);
+    }
+
+    public  List<Employee> getAllEmployees(){
+        logger.info("Fetching all employees for name searching");
+        return repo.findAll();
     }
 }

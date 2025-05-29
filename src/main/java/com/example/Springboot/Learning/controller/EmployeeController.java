@@ -1,6 +1,7 @@
 package com.example.Springboot.Learning.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.Springboot.Learning.dto.EmployeeRegisterDTO;
 import com.example.Springboot.Learning.model.Employee;
@@ -45,6 +46,7 @@ public class EmployeeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list"),
+            @ApiResponse(responseCode = "204", description = "Employees not there (No Content)"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping
@@ -65,7 +67,7 @@ public class EmployeeController {
 
         if (employeesPage.isEmpty()) {
             logger.warn("No employees found for the given page/filters.");
-            return ResponseEntity.ok("No Employees Present");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Employees Present");
         }
 
         return ResponseEntity.ok(employeesPage);
@@ -121,5 +123,29 @@ public class EmployeeController {
     public void delete(
             @Parameter(description = "ID of the employee to delete") @PathVariable Long id) {
         service.delete(id);
+    }
+
+    @Operation(
+            summary = "Search employees by name",
+            description = "Returns a list of employees whose names match the given keyword (case-insensitive)"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved matching employees"),
+            @ApiResponse(responseCode = "404", description = "No employees found with the given name")
+    })
+    @GetMapping("searchByName")
+    public ResponseEntity<?>  searchByName(
+            @Parameter(description = "Name to search")
+            @RequestParam String name){
+        logger.info("Searching employees with name containing: {}", name);
+        List<Employee> employees = service.getAllEmployees();
+        List<Employee> filteredEmployees = employees.stream()
+                .filter(emp -> emp.getName().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toList());
+    if(filteredEmployees.isEmpty()){
+        logger.warn("No employees found matching name: {}", name);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No matching employees found");
+    }
+    return ResponseEntity.ok(filteredEmployees);
     }
 }
