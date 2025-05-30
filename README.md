@@ -23,3 +23,4 @@ http://localhost:8080/swagger-ui/index.html
 15. Learn JPA Criteria Queries
 16. define swagger file -> learn to read swagger file (https://editor.swagger.io/)
 17. write schleder which runs onces in 24 hours and sends email of newly created employess of 24 hours
+18. learn about kafka + springboot
