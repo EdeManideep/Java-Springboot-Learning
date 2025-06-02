@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.example.Springboot.Learning.dto.EmployeeRegisterDTO;
 import com.example.Springboot.Learning.model.Employee;
+import com.example.Springboot.Learning.model.PagedResponse;
 import com.example.Springboot.Learning.service.EmployeeService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Tag(
         name = "Employee Controller",
@@ -72,18 +77,34 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Employees Present");
         }
 
-        return ResponseEntity.ok(employeesPage);
+        PagedResponse<Employee> response = new PagedResponse<>(
+                employeesPage.getContent(),
+                employeesPage.getNumber(),
+                employeesPage.getSize(),
+                employeesPage.getTotalElements(),
+                employeesPage.getTotalPages(),
+                employeesPage.isLast()
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Get employee by ID", description = "Fetch a single employee using their ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Employee found"),
-            @ApiResponse(responseCode = "204", description = "Employee not there with given id (No Content)")
+            @ApiResponse(responseCode = "204", description = "Employee not there with given id (No Content)"),
+            @ApiResponse(responseCode = "400", description = "Invalid ID format")
     })
     @GetMapping("/{id}")
     public Employee getById(
-            @Parameter(description = "ID of the employee to be fetched") @PathVariable Long id) {
-        return service.getById(id);
+            @Parameter(description = "ID of the employee to be fetched") @PathVariable String id) {
+        Long employeeId;
+        try{
+            employeeId = Long.parseLong(id);
+        }catch (NumberFormatException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id must be a valid integer value");
+        }
+        return service.getById(employeeId);
     }
 
     @Operation(
@@ -98,7 +119,7 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<Employee> create(
             @Parameter(description = "Employee data for creation")
-            @RequestBody EmployeeRegisterDTO employee) {
+            @RequestBody @Valid EmployeeRegisterDTO employee) {
         Employee created = service.create(employee);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
@@ -111,9 +132,15 @@ public class EmployeeController {
     })
     @PutMapping("/{id}")
     public Employee update(
-            @Parameter(description = "ID of the employee to update") @PathVariable Long id,
-            @Parameter(description = "Updated employee data") @RequestBody EmployeeRegisterDTO employee) {
-        return service.update(id, employee);
+            @Parameter(description = "ID of the employee to update") @PathVariable String id,
+            @Parameter(description = "Updated employee data") @RequestBody @Valid EmployeeRegisterDTO employee) {
+        Long employeeId;
+        try{
+            employeeId = Long.parseLong(id);
+        }catch (NumberFormatException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id must be a valid integer value");
+        }
+        return service.update(employeeId, employee);
     }
 
     @Operation(summary = "Delete employee by ID", description = "Removes an employee from the system using their ID")
@@ -123,8 +150,14 @@ public class EmployeeController {
     })
     @DeleteMapping("/{id}")
     public void delete(
-            @Parameter(description = "ID of the employee to delete") @PathVariable Long id) {
-        service.delete(id);
+            @Parameter(description = "ID of the employee to delete") @PathVariable String id) {
+        Long employeeId;
+        try{
+            employeeId = Long.parseLong(id);
+        }catch (NumberFormatException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id must be a valid integer value");
+        }
+        service.delete(employeeId);
     }
 
     @Operation(

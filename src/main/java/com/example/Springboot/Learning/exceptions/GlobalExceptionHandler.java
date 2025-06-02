@@ -6,7 +6,10 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.*;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -34,9 +37,43 @@ public class GlobalExceptionHandler {
     }
 
     // Handle all uncaught exceptions - 5XX
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<Object> handleAllExceptions(Exception ex) {
+//        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+//    }
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleAllExceptions(Exception ex) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public Map<String, String> handleAllUnhandledExceptions(Exception ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Internal Server Error");
+
+        // Check if message is not null and not empty
+        if (ex.getMessage() != null && !ex.getMessage().isEmpty()) {
+            // Extract message manually from ex.getMessage()
+            String fullMessage = ex.getMessage();
+
+            // Extract message between double quotes
+            String message = fullMessage.replaceAll(".*\"(.*)\".*", "$1");
+
+            error.put("message", message);
+        } else {
+            error.put("message", "An unexpected error occurred");
+        }
+        return error;
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public Map<String, Object> handleNotFound(NoHandlerFoundException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("status", 404);
+        errorResponse.put("error", "Not Found");
+        errorResponse.put("message", "The requested URL was not found on the server.");
+        errorResponse.put("path", ex.getRequestURL());
+        return errorResponse;
     }
 
     // Utility method to build response body
