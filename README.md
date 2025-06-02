@@ -2,13 +2,13 @@ http://localhost:8080/swagger-ui/index.html
 1. add logging to project log4j2 - done
   1.1 convert this into slf4j - using streams
 2. Custom exception handling for 4XX and 5XX - almost done(check)
-  2.1 manage invalid uri
+  2.1 manage invalid uri - done
   2.2 learn the difference b/w uri & url
   2.3 invalid http verb management
-  2.4 invalid argument management
+  2.4 invalid argument management - done
 3. Swagger detailed all possible exceptions and outcomes - done
 4. pagination for get all employess end point url - done
-  4.1 learn metadata of pagination
+  4.1 learn metadata of pagination - done (changed the response body)
 5. use streams for filtering end point - add new end point for search by name - done
   5.1 add pagination to filterByName end point
   5.2 implement predicate
