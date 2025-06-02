@@ -1,3 +1,5 @@
+//todo controller should be an interface
+//todo all static strings should come from static file's - after completing all changes
 package com.example.Springboot.Learning.controller;
 
 import java.util.List;
