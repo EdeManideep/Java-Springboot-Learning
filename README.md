@@ -26,4 +26,4 @@ http://localhost:8080/swagger-ui/index.html
 18. learn about kafka + springboot
 
 
--> We can create our own @annotations in spring boot project
+-> We can create our own @annotations in spring boot project - logging
