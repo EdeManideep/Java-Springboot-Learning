@@ -1,12 +1,11 @@
 package com.example.Springboot.Learning.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -17,4 +16,12 @@ public class Employee {
     Long id;
     String name, department;
     Double salary;
+    String email;
+    @Column(nullable = false, updatable = false)
+    LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist(){
+        this.createdAt = LocalDateTime.now();
+    }
 }
