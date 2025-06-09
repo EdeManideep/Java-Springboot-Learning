@@ -4,6 +4,8 @@ public class EmployeeApiConstants {
     // Common
     public static final String ERROR_INVALID_ID = "Id must be a valid integer value";
     public static final String RESPONSE_INVALID_ID = "Invalid ID format";
+    public static final String PARAM_PAGE_NUMBER_MIN = "Page number must be 0 or greater";
+    public static final String PARAM_PAGE_NUMBER_MIN_SIZE = "Page size must be at least 1";
 
     // Get all employees constants
     public static final String GET_ALL_EMPLOYEES_SUMMARY = "Get all employees with pagination";
@@ -59,5 +61,5 @@ public class EmployeeApiConstants {
     public static final String MESSAGE_EMPLOYEE_SEARCH_NOT_FOUND = "No matching employees found";
     public static final String LOG_EMPLOYEE_SEARCH = "Searching employees with name containing: {}";
     public static final String LOG_EMPLOYEE_SEARCH_NOT_FOUND = "No employees found matching name: {}";
-
+    public static final String RESPONSE_EMPLOYEE_NOT_FOUND_SEARCH_BY_NAME = "Employees not there (No Content)";
 }

@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -28,8 +29,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Tag(
         name = "Employee Controller",
@@ -63,10 +62,12 @@ public class EmployeeController {
             @RequestParam(defaultValue = "id") String sortBy,
             @Parameter(description = EmployeeApiConstants.PARAM_SORT_DIRECTION_DESC)
             @RequestParam(defaultValue = "asc") String direction,
+            @Min(value = 0, message = EmployeeApiConstants.PARAM_PAGE_NUMBER_MIN)
             @Parameter(description = EmployeeApiConstants.PARAM_PAGE_NUMBER_DESC)
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "0") Integer page,
+            @Min(value = 1, message = EmployeeApiConstants.PARAM_PAGE_NUMBER_MIN_SIZE)
             @Parameter(description = EmployeeApiConstants.PARAM_PAGE_SIZE_DESC)
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") Integer size) {
 
         logger.info(EmployeeApiConstants.LOG_EMPLOYEES_FETCHING, page, size, sortBy, direction);
 
@@ -119,12 +120,13 @@ public class EmployeeController {
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = EmployeeApiConstants.RESPONSE_EMPLOYEE_CREATED),
             @ApiResponse(responseCode = "400", description = EmployeeApiConstants.RESPONSE_INVALID_INPUT),
-           @ApiResponse(responseCode = "500", description = EmployeeApiConstants.RESPONSE_INTERNAL_ERROR)
+            @ApiResponse(responseCode = "500", description = EmployeeApiConstants.RESPONSE_INTERNAL_ERROR)
     })
     @PostMapping
     public ResponseEntity<Employee> create(
             @Parameter(description = EmployeeApiConstants.PARAM_CREATE_EMPLOYEE_DESC)
             @RequestBody @Valid EmployeeRegisterDTO employee) {
+        System.out.println("Creating employee: " + employee);
         Employee created = service.create(employee);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
@@ -173,15 +175,27 @@ public class EmployeeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = EmployeeApiConstants.RESPONSE_EMPLOYEE_SEARCH_SUCCESS),
+            @ApiResponse(responseCode = "204", description = EmployeeApiConstants.RESPONSE_EMPLOYEE_NOT_FOUND_SEARCH_BY_NAME),
             @ApiResponse(responseCode = "404", description = EmployeeApiConstants.RESPONSE_EMPLOYEE_SEARCH_NOT_FOUND)
     })
     @GetMapping("searchByName")
     public ResponseEntity<?>  searchByName(
-            @Parameter(description = EmployeeApiConstants.PARAM_EMPLOYEE_NAME_SEARCH_DESC)
-            @RequestParam String name){
+            @Parameter(description = EmployeeApiConstants.PARAM_EMPLOYEE_NAME_SEARCH_DESC) @RequestParam String name,
+            @Min(value = 0, message = EmployeeApiConstants.PARAM_PAGE_NUMBER_MIN)
+            @Parameter(description = EmployeeApiConstants.PARAM_PAGE_NUMBER_DESC) @RequestParam(defaultValue = "0") Integer page,
+            @Min(value = 1, message = EmployeeApiConstants.PARAM_PAGE_NUMBER_MIN_SIZE)
+            @Parameter(description = EmployeeApiConstants.PARAM_PAGE_SIZE_DESC) @RequestParam(defaultValue = "10") Integer pageSize)
+    {
         logger.info(EmployeeApiConstants.LOG_EMPLOYEE_SEARCH, name);
-        List<Employee> employees = service.getAllEmployees();
-        List<Employee> filteredEmployees = employees.stream()
+//        List<Employee> employees = service.getAllEmployees();
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Employee> employeePage = service.getAllEmployees(pageable);
+
+        if(employeePage.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(EmployeeApiConstants.MESSAGE_NO_EMPLOYEES);
+        }
+
+        List<Employee> filteredEmployees = employeePage.stream()
                 .filter(emp -> emp.getName().toLowerCase().contains(name.toLowerCase()))
                 .collect(Collectors.toList());
     if(filteredEmployees.isEmpty()){

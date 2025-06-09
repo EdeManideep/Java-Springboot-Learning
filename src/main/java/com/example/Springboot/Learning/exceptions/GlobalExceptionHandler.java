@@ -3,6 +3,7 @@ package com.example.Springboot.Learning.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.*;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,7 +27,6 @@ public class GlobalExceptionHandler {
 
     // Handle bad requests - 4XX
     @ExceptionHandler({
-            MethodArgumentNotValidException.class,
             HttpMessageNotReadableException.class,
             MissingServletRequestParameterException.class,
             MissingPathVariableException.class,
@@ -34,6 +34,15 @@ public class GlobalExceptionHandler {
     })
     public ResponseEntity<Object> handleBadRequest(Exception ex) {
         return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleValidationErrors(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errors.put(error.getField(), error.getDefaultMessage())
+        );
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
     // Handle all uncaught exceptions - 5XX
@@ -75,6 +84,19 @@ public class GlobalExceptionHandler {
         errorResponse.put("path", ex.getRequestURL());
         return errorResponse;
     }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ResponseBody
+    public Map<String, Object> handleMethodNotAllowed(HttpRequestMethodNotSupportedException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("status", 405);
+        errorResponse.put("error", "Method Not Allowed");
+        errorResponse.put("message", "Invalid HTTP method used: " + ex.getMethod());
+        errorResponse.put("supportedMethods", ex.getSupportedHttpMethods());
+        return errorResponse;
+    }
+
 
     // Utility method to build response body
     private ResponseEntity<Object> buildResponse(HttpStatus status, String message) {

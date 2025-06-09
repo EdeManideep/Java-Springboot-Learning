@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.Springboot.Learning.dto.EmployeeRegisterDTO;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class EmployeeService {
 
     private static final Logger logger = LogManager.getLogger(EmployeeService.class);
 
+    @Autowired
+    private EmailService emailService;
+
     public Page<Employee> getAll(Pageable pageable) {
         logger.info("Calling repository to fetch paginated employee list");
         return repo.findAll(pageable);
@@ -43,7 +47,11 @@ public class EmployeeService {
         employee.setName(e.getName());
         employee.setDepartment(e.getDepartment());
         employee.setSalary(e.getSalary());
-        return repo.save(employee);
+        employee.setEmail(e.getEmail());
+        Employee savedEmp = repo.save(employee);
+//        Send Welcome Email
+//        emailService.sendWelcomeEmail(savedEmp.getEmail(), savedEmp.getName());
+        return savedEmp;
     }
 
     public Employee update(Long id, EmployeeRegisterDTO employee) {
@@ -63,8 +71,8 @@ public class EmployeeService {
         repo.deleteById(id);
     }
 
-    public  List<Employee> getAllEmployees(){
+    public  Page<Employee> getAllEmployees(Pageable pageable){
         logger.info("Fetching all employees for name searching");
-        return repo.findAll();
+        return repo.findAll(pageable);
     }
 }
