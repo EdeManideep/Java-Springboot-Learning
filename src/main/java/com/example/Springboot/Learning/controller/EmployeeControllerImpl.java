@@ -57,17 +57,7 @@ public class EmployeeControllerImpl implements EmployeeController {
             @ApiResponse(responseCode = "500", description = EmployeeApiConstants.RESPONSE_INTERNAL_SERVER_ERROR)
     })
     @GetMapping
-    public ResponseEntity<?> getAll(
-            @Parameter(description = EmployeeApiConstants.PARAM_SORT_BY_DESC)
-            @RequestParam(defaultValue = "id") String sortBy,
-            @Parameter(description = EmployeeApiConstants.PARAM_SORT_DIRECTION_DESC)
-            @RequestParam(defaultValue = "asc") String direction,
-            @Min(value = 0, message = EmployeeApiConstants.PARAM_PAGE_NUMBER_MIN)
-            @Parameter(description = EmployeeApiConstants.PARAM_PAGE_NUMBER_DESC)
-            @RequestParam(defaultValue = "0") Integer page,
-            @Min(value = 1, message = EmployeeApiConstants.PARAM_PAGE_NUMBER_MIN_SIZE)
-            @Parameter(description = EmployeeApiConstants.PARAM_PAGE_SIZE_DESC)
-            @RequestParam(defaultValue = "10") Integer size) {
+    public ResponseEntity<?> getAll(String sortBy,String direction,Integer page,Integer size) {
 
         logger.info(EmployeeApiConstants.LOG_EMPLOYEES_FETCHING, page, size, sortBy, direction);
 
@@ -102,8 +92,7 @@ public class EmployeeControllerImpl implements EmployeeController {
             @ApiResponse(responseCode = "400", description = EmployeeApiConstants.RESPONSE_INVALID_ID)
     })
     @GetMapping("/{id}")
-    public Employee getById(
-            @Parameter(description = EmployeeApiConstants.PARAM_EMPLOYEE_ID_DESC) @PathVariable String id) {
+    public Employee getById(String id) {
         Long employeeId;
         try{
             employeeId = Long.parseLong(id);
@@ -123,9 +112,7 @@ public class EmployeeControllerImpl implements EmployeeController {
             @ApiResponse(responseCode = "500", description = EmployeeApiConstants.RESPONSE_INTERNAL_ERROR)
     })
     @PostMapping
-    public ResponseEntity<Employee> create(
-            @Parameter(description = EmployeeApiConstants.PARAM_CREATE_EMPLOYEE_DESC)
-            @RequestBody @Valid EmployeeRegisterDTO employee) {
+    public ResponseEntity<Employee> create(EmployeeRegisterDTO employee) {
         System.out.println("Creating employee: " + employee);
         Employee created = service.create(employee);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -139,9 +126,7 @@ public class EmployeeControllerImpl implements EmployeeController {
             @ApiResponse(responseCode = "400", description = EmployeeApiConstants.RESPONSE_INVALID_ID)
     })
     @PutMapping("/{id}")
-    public Employee update(
-            @Parameter(description = EmployeeApiConstants.PARAM_EMPLOYEE_ID_UPDATE_DESC) @PathVariable String id,
-            @Parameter(description = EmployeeApiConstants.PARAM_EMPLOYEE_UPDATE_DATA_DESC) @RequestBody @Valid EmployeeRegisterDTO employee) {
+    public Employee update(String id,EmployeeRegisterDTO employee) {
         Long employeeId;
         try{
             employeeId = Long.parseLong(id);
@@ -158,8 +143,7 @@ public class EmployeeControllerImpl implements EmployeeController {
             @ApiResponse(responseCode = "400", description = EmployeeApiConstants.RESPONSE_INVALID_ID)
     })
     @DeleteMapping("/{id}")
-    public void delete(
-            @Parameter(description = EmployeeApiConstants.PARAM_EMPLOYEE_ID_DELETE_DESC) @PathVariable String id) {
+    public void delete(String id) {
         Long employeeId;
         try{
             employeeId = Long.parseLong(id);
@@ -179,13 +163,9 @@ public class EmployeeControllerImpl implements EmployeeController {
             @ApiResponse(responseCode = "404", description = EmployeeApiConstants.RESPONSE_EMPLOYEE_SEARCH_NOT_FOUND)
     })
     @GetMapping("searchByName")
-    public ResponseEntity<?>  searchByName(
-            @Parameter(description = EmployeeApiConstants.PARAM_EMPLOYEE_NAME_SEARCH_DESC) @RequestParam String name,
-            @Min(value = 0, message = EmployeeApiConstants.PARAM_PAGE_NUMBER_MIN)
-            @Parameter(description = EmployeeApiConstants.PARAM_PAGE_NUMBER_DESC) @RequestParam(defaultValue = "0") Integer page,
-            @Min(value = 1, message = EmployeeApiConstants.PARAM_PAGE_NUMBER_MIN_SIZE)
-            @Parameter(description = EmployeeApiConstants.PARAM_PAGE_SIZE_DESC) @RequestParam(defaultValue = "10") Integer pageSize)
-    {
+    public ResponseEntity<?>  searchByName(@RequestParam String name,
+                                           @RequestParam(defaultValue = "0") Integer page,
+                                           @RequestParam(defaultValue = "10") Integer pageSize){
         logger.info(EmployeeApiConstants.LOG_EMPLOYEE_SEARCH, name);
 //        List<Employee> employees = service.getAllEmployees();
         Pageable pageable = PageRequest.of(page, pageSize);
@@ -198,10 +178,10 @@ public class EmployeeControllerImpl implements EmployeeController {
         List<Employee> filteredEmployees = employeePage.stream()
                 .filter(emp -> emp.getName().toLowerCase().contains(name.toLowerCase()))
                 .collect(Collectors.toList());
-    if(filteredEmployees.isEmpty()){
-        logger.warn(EmployeeApiConstants.LOG_EMPLOYEE_SEARCH_NOT_FOUND, name);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EmployeeApiConstants.MESSAGE_EMPLOYEE_SEARCH_NOT_FOUND);
-    }
-    return ResponseEntity.ok(filteredEmployees);
+        if(filteredEmployees.isEmpty()){
+            logger.warn(EmployeeApiConstants.LOG_EMPLOYEE_SEARCH_NOT_FOUND, name);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EmployeeApiConstants.MESSAGE_EMPLOYEE_SEARCH_NOT_FOUND);
+        }
+        return ResponseEntity.ok(filteredEmployees);
     }
 }
