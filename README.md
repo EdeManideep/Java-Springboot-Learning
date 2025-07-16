@@ -51,57 +51,59 @@
 
     * Use Java predicates for filtering logic in search endpoints
 
-12. **Fix Maven Build**
-
-    * Check and resolve errors in `Dev` branch workflow actions
-
 ---
 
 ## ✅ Completed Tasks
 
-13. **Add Logging (Log4j2)**
+1. **Add Logging (Log4j2)**
 
     * Integrated `log4j2` for logging
 
-14. **Filter Endpoint with Streams**
+2. **Filter Endpoint with Streams**
 
     * Created endpoint for filtering by name
     * ✔️ 5.1: Added pagination
     * ✔️ 5.2: Predicate logic pending (see To-Do #11)
 
-15. **Detailed Swagger Documentation**
+3. **Detailed Swagger Documentation**
 
     * All possible exceptions and outcomes documented
     * ✔️ 3.1: Swagger file pending (see To-Do #7)
 
-16. **Custom Exception Handling**
+4. **Custom Exception Handling**
 
     * ✔️ 2.1: Handled invalid URI
     * ✔️ 2.2: Learned difference between URI & URL
     * ✔️ 2.3: Handled invalid HTTP verbs
     * ✔️ 2.4: Managed invalid arguments
 
-17. **Pagination for Get All Employees**
+5. **Pagination for Get All Employees**
 
     * Implemented pagination
     * ✔️ 4.1: Added pagination metadata in response
 
-18. **Update HTTP Status Codes**
+6. **Update HTTP Status Codes**
 
     * `getById` and `getAll` now respond with HTTP 204 (No Content) instead of 404
 
-19. **Database File Persistence**
+7. **Database File Persistence**
 
     * Configured H2 to persist data to project directory
 
-20. **Change Data Type of Salary Field**
+8. **Change Data Type of Salary Field**
 
     * Updated `salary` field datatype
 
-21. **Dockerize the Project**
+9. **Dockerize the Project**
 
     * Added Docker support and configuration
 
-22. **Scheduled Email Task**
+10. **Scheduled Email Task**
 
     * Wrote a scheduler to run every 24 hours and email newly created employees
+
+11. **Fix Maven Build**
+
+    * Check and resolve errors in `Dev` branch workflow actions
+
+
